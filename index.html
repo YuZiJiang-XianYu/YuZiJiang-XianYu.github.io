@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="YuZiJiang-XianYu · Developer & Creator">
+    <title>YuZiJiang-XianYu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #fdfaf5;
+            --paper-warm: #f8f3ea;
+            --ink: #1f1d1a;
+            --ink-light: #6b6560;
+            --ink-lighter: #9e9790;
+            --vermillion: #cc5a41;
+            --vermillion-glow: #e8735a;
+            --sage: #5b8b7a;
+            --sage-light: #e8f0ec;
+            --border: #e6ded4;
+            --card-bg: #ffffff;
+            --card-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+            --card-shadow-hover: 0 1px 2px rgba(0,0,0,0.05), 0 8px 32px rgba(0,0,0,0.08);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --gap: clamp(1.5rem, 4vw, 3rem);
+            --max-width: 960px;
+            --font-display: 'DM Serif Display', 'Noto Serif SC', 'Source Han Serif SC', serif;
+            --font-body: 'DM Sans', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            --font-mono: 'JetBrains Mono', 'Cascadia Code', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 17px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--paper);
+            color: var(--ink);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-image:
+                radial-gradient(ellipse at 15% 0%, rgba(204,90,65,0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 85% 20%, rgba(91,139,122,0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 60%, rgba(204,90,65,0.02) 0%, transparent 50%);
+        }
+
+        /* ---- Noise texture overlay ---- */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 180px 180px;
+        }
+
+        /* ---- Typography ---- */
+        h1, h2, h3 {
+            font-family: var(--font-display);
+            font-weight: 400;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+        }
+        h1 { font-size: clamp(2.8rem, 7vw, 4.5rem); }
+        h2 { font-size: clamp(1.8rem, 4vw, 2.4rem); }
+        h3 { font-size: 1.15rem; font-family: var(--font-body); font-weight: 500; }
+
+        a {
+            color: var(--vermillion);
+            text-decoration: none;
+            transition: color 0.2s ease;
+            position: relative;
+        }
+        a:hover { color: var(--vermillion-glow); }
+        a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -1px;
+            width: 100%;
+            height: 1px;
+            background: currentColor;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+        a:hover::after { transform: scaleX(1); transform-origin: left; }
+
+        /* ---- Navigation ---- */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1rem 2rem;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+        nav.scrolled {
+            background: rgba(253,250,245,0.82);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 1px 0 var(--border);
+        }
+        nav .nav-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav .logo {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--ink);
+            font-weight: 500;
+        }
+        nav .logo .bracket { color: var(--ink-lighter); }
+        nav .logo .fish { color: var(--vermillion); }
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        nav ul a {
+            font-size: 0.88rem;
+            color: var(--ink-light);
+            font-weight: 400;
+        }
+        nav ul a::after { display: none; }
+        nav ul a:hover { color: var(--ink); }
+
+        /* ---- Main layout ---- */
+        main {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 var(--gap);
+        }
+
+        section {
+            padding: var(--gap) 0;
+        }
+
+        /* ---- Hero ---- */
+        .hero {
+            padding-top: clamp(7rem, 16vw, 12rem);
+            padding-bottom: clamp(3rem, 8vw, 6rem);
+            position: relative;
+        }
+        .hero .tag {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--vermillion);
+            background: rgba(204,90,65,0.08);
+            padding: 0.35em 0.9em;
+            border-radius: 100px;
+            margin-bottom: 1.8rem;
+            letter-spacing: 0.03em;
+        }
+        .hero h1 {
+            margin-bottom: 0.3rem;
+        }
+        .hero h1 .accent {
+            color: var(--vermillion);
+            font-style: italic;
+        }
+        .hero .subtitle {
+            font-size: clamp(1.05rem, 2vw, 1.25rem);
+            color: var(--ink-light);
+            max-width: 520px;
+            margin-top: 1.2rem;
+            line-height: 1.6;
+        }
+        .hero .divider {
+            width: 48px;
+            height: 3px;
+            background: var(--vermillion);
+            margin: 2rem 0;
+            border-radius: 2px;
+            opacity: 0.6;
+        }
+        /* Hero floating decorative circle */
+        .hero::after {
+            content: '';
+            position: absolute;
+            right: -80px;
+            top: 20%;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(232,115,90,0.08) 0%, transparent 70%);
+            pointer-events: none;
+            animation: float 8s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-24px) scale(1.04); }
+        }
+
+        /* ---- Section headers ---- */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+        .section-header .number {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--ink-lighter);
+        }
+        .section-header h2 {
+            flex: 1;
+        }
+        .section-header .line {
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+            min-width: 40px;
+        }
+
+        /* ---- Skills ---- */
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+        .skill-tag {
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            color: var(--ink);
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 0.45em 1em;
+            border-radius: 100px;
+            transition: all 0.25s ease;
+            cursor: default;
+            user-select: none;
+        }
+        .skill-tag:hover {
+            border-color: var(--vermillion);
+            color: var(--vermillion);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(204,90,65,0.1);
+        }
+        .skill-tag.highlight {
+            background: var(--vermillion);
+            color: #fff;
+            border-color: var(--vermillion);
+        }
+
+        /* ---- Projects ---- */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+        .project-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.6rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--vermillion);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+        .project-card:hover {
+            box-shadow: var(--card-shadow-hover);
+            transform: translateY(-3px);
+        }
+        .project-card:hover::before { transform: scaleX(1); }
+        .project-card .lang-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+            vertical-align: middle;
+            position: relative;
+            top: -1px;
+        }
+        .dot-py { background: #3572A5; }
+        .dot-js { background: #f0db4f; }
+        .dot-html { background: #e34c26; }
+        .project-card .meta {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--ink-lighter);
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .project-card h3 { margin-bottom: 0.4rem; }
+        .project-card p {
+            font-size: 0.92rem;
+            color: var(--ink-light);
+            line-height: 1.6;
+        }
+        .project-card .card-link {
+            display: inline-block;
+            margin-top: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            font-weight: 500;
+        }
+
+        /* ---- Contact ---- */
+        .contact {
+            padding-bottom: clamp(3rem, 8vw, 6rem);
+        }
+        .contact-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65em 1.3em;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            color: var(--ink);
+            background: var(--card-bg);
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+        .contact-btn:hover {
+            border-color: var(--ink);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+        .contact-btn svg {
+            width: 18px;
+            height: 18px;
+            opacity: 0.7;
+        }
+
+        /* ---- Footer ---- */
+        footer {
+            text-align: center;
+            padding: 2rem var(--gap) 3rem;
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+        footer p {
+            font-size: 0.82rem;
+            color: var(--ink-lighter);
+        }
+        footer .fish-emoji {
+            display: inline-block;
+            animation: swim 3s ease-in-out infinite;
+        }
+        @keyframes swim {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            25% { transform: translateX(3px) rotate(-5deg); }
+            75% { transform: translateX(-3px) rotate(5deg); }
+        }
+
+        /* ---- Scroll Reveal ---- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ---- Responsive ---- */
+        @media (max-width: 640px) {
+            nav ul { gap: 1.2rem; }
+            nav ul a { font-size: 0.8rem; }
+            .hero::after { display: none; }
+            .projects-grid { grid-template-columns: 1fr; }
+            .contact-links { flex-direction: column; }
+            .contact-btn { justify-content: center; }
+        }
+
+        /* Selection color */
+        ::selection {
+            background: rgba(204,90,65,0.18);
+            color: var(--ink);
+        }
+    </style>
+</head>
+<body>
+    <nav id="nav">
+        <div class="nav-inner">
+            <a href="#" class="logo">
+                <span class="bracket">{</span> <span class="fish">&#x9c7c;</span> <span class="bracket">}</span>
+            </a>
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero -->
+        <section class="hero reveal">
+            <div class="tag">&gt; Hello, World_</div>
+            <h1>
+                I'm <span class="accent">YuZiJiang</span><br>XianYu
+            </h1>
+            <div class="divider"></div>
+            <p class="subtitle">
+                Building things at the intersection of code and creativity.
+                Turning coffee into software, one commit at a time.
+            </p>
+        </section>
+
+        <!-- About -->
+        <section id="about" class="reveal">
+            <div class="section-header">
+                <span class="number">01</span>
+                <h2>About</h2>
+                <span class="line"></span>
+            </div>
+            <p style="font-size:1.05rem;color:var(--ink-light);max-width:640px;">
+                A developer who writes code, occasionally ships things,
+                and believes that the best software is built with curiosity and care.
+                Currently exploring the wild world of AI, open-source, and
+                everything in between.
+            </p>
+        </section>
+
+        <!-- Skills -->
+        <section id="skills" class="reveal">
+            <div class="section-header">
+                <span class="number">02</span>
+                <h2>Skills &amp; Tools</h2>
+                <span class="line"></span>
+            </div>
+            <div class="skills-grid">
+                <span class="skill-tag highlight">Python</span>
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">HTML / CSS</span>
+                <span class="skill-tag">TypeScript</span>
+                <span class="skill-tag">Git</span>
+                <span class="skill-tag">VS Code</span>
+                <span class="skill-tag">JetBrains IDE</span>
+                <span class="skill-tag">Node.js</span>
+                <span class="skill-tag">React</span>
+                <span class="skill-tag">MySQL</span>
+                <span class="skill-tag">Linux / Bash</span>
+                <span class="skill-tag">Claude / AI Tools</span>
+                <span class="skill-tag">GitHub Actions</span>
+                <span class="skill-tag">REST API</span>
+                <span class="skill-tag">Docker</span>
+            </div>
+        </section>
+
+        <!-- Projects -->
+        <section id="projects" class="reveal">
+            <div class="section-header">
+                <span class="number">03</span>
+                <h2>Projects</h2>
+                <span class="line"></span>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="meta">
+                        <span><span class="lang-dot dot-js"></span> JavaScript</span>
+                        <span>Canvas API</span>
+                    </div>
+                    <h3>Tetris Game</h3>
+                    <p>
+                        Classic Tetris built with vanilla JavaScript and Canvas rendering.
+                        Features wall kicks, ghost piece, SRS rotation, and progressive difficulty.
+                    </p>
+                    <a href="https://github.com/YuZiJiang-XianYu/tetris" class="card-link" target="_blank" rel="noopener">
+                        View Project &rarr;
+                    </a>
+                </div>
+                <div class="project-card">
+                    <div class="meta">
+                        <span><span class="lang-dot dot-py"></span> Python</span>
+                        <span>Algorithm</span>
+                    </div>
+                    <h3>Simulated Annealing TSP</h3>
+                    <p>
+                        Traveling Salesman Problem solver using simulated annealing
+                        with real-time matplotlib visualization and 2-opt perturbation.
+                    </p>
+                    <a href="https://github.com/YuZiJiang-XianYu/simulated-annealing-tsp" class="card-link" target="_blank" rel="noopener">
+                        View Project &rarr;
+                    </a>
+                </div>
+                <div class="project-card">
+                    <div class="meta">
+                        <span><span class="lang-dot dot-html"></span> HTML/CSS</span>
+                        <span>GitHub Pages</span>
+                    </div>
+                    <h3>Personal Homepage</h3>
+                    <p>
+                        This very site. A minimalist personal homepage hosted on GitHub Pages.
+                        Designed with care, built with vanilla web technologies.
+                    </p>
+                    <a href="https://github.com/YuZiJiang-XianYu/YuZiJiang-XianYu.github.io" class="card-link" target="_blank" rel="noopener">
+                        View Source &rarr;
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section id="contact" class="reveal">
+            <div class="section-header">
+                <span class="number">04</span>
+                <h2>Contact</h2>
+                <span class="line"></span>
+            </div>
+            <p style="color:var(--ink-light);margin-bottom:1.5rem;font-size:1.02rem;">
+                Feel free to reach out &mdash; always open to interesting conversations.
+            </p>
+            <div class="contact-links">
+                <a href="https://github.com/YuZiJiang-XianYu" class="contact-btn" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                    GitHub
+                </a>
+                <a href="mailto:hello@example.com" class="contact-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                    Email
+                </a>
+                <a href="#" class="contact-btn">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.633 7.997c.013.175.013.349.013.523 0 5.325-4.053 11.461-11.46 11.461-2.282 0-4.402-.661-6.186-1.809.324.037.636.05.973.05a8.07 8.07 0 0 0 5.001-1.721 4.036 4.036 0 0 1-3.767-2.793c.249.037.499.062.761.062.361 0 .724-.05 1.061-.137a4.027 4.027 0 0 1-3.23-3.953v-.05c.537.299 1.16.486 1.82.511a4.022 4.022 0 0 1-1.796-3.354c0-.748.199-1.434.548-2.032a11.457 11.457 0 0 0 8.306 4.215c-.062-.3-.1-.611-.1-.923a4.026 4.026 0 0 1 6.958-2.756 7.88 7.88 0 0 0 2.555-.973 4.02 4.02 0 0 1-1.771 2.22 8.044 8.044 0 0 0 2.319-.624 8.645 8.645 0 0 1-2.019 2.083z"/></svg>
+                    Twitter / X
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>
+            &copy; 2026 YuZiJiang-XianYu &nbsp;
+            <span class="fish-emoji">&#x1f41f;</span>
+            &nbsp; Crafted with care &amp; curiosity
+        </p>
+    </footer>
+
+    <script>
+        // Scroll-triggered nav background
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 20);
+        }, {passive: true});
+
+        // Scroll reveal animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {threshold: 0.15, rootMargin: '0px 0px -40px 0px'});
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Trigger hero reveal immediately
+        document.querySelector('.hero.reveal').classList.add('visible');
+    </script>
+</body>
+</html>
