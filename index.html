@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ZiLang · Developer & Creator">
-    <title>ZiLang</title>
+    <meta name="description" content="ZiLang · Personal Workspace">
+    <title>ZiLang Personal Workspace</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -125,8 +125,6 @@
             color: var(--ink);
             font-weight: 500;
         }
-        nav .logo .bracket { color: var(--ink-lighter); }
-        nav .logo .fish { color: var(--vermillion); }
         nav ul {
             display: flex;
             gap: 2rem;
@@ -305,6 +303,16 @@
         .dot-py { background: #3572A5; }
         .dot-js { background: #f0db4f; }
         .dot-html { background: #e34c26; }
+        .dot-css { background: #563d7c; }
+        .dot-c { background: #555555; }
+        .dot-cpp { background: #f34b7d; }
+        .dot-java { background: #b07219; }
+        .dot-ts { background: #3178c6; }
+        .dot-go { background: #00ADD8; }
+        .dot-rust { background: #dea584; }
+        .dot-swift { background: #F05138; }
+        .dot-kotlin { background: #A97BFF; }
+        .dot-default { background: #8b8b8b; }
         .project-card .meta {
             font-family: var(--font-mono);
             font-size: 0.72rem;
@@ -414,12 +422,11 @@
 <body>
     <nav id="nav">
         <div class="nav-inner">
-            <a href="#" class="logo">
-                <span class="bracket">{</span> <span class="fish">&#x9c7c;</span> <span class="bracket">}</span>
-            </a>
+            <a href="#" class="logo">ZiLang</a>
             <ul>
-                <li><a href="#about">About</a></li>
+                <li><a href="#about">About Me</a></li>
                 <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </div>
@@ -443,13 +450,11 @@
         <section id="about" class="reveal">
             <div class="section-header">
                 <span class="number">01</span>
-                <h2>About</h2>
+                <h2>About Me</h2>
                 <span class="line"></span>
             </div>
             <p style="font-size:1.05rem;color:var(--ink-light);max-width:640px;">
-                Currently studying Computer Science and Technology, exploring
-                the world of code, algorithms, and everything in between.
-                Curious about AI, open-source, and building things that matter.
+                现在是一名普通本科的计算机科学与技术专业的学生，正在努力变得更好。
             </p>
         </section>
 
@@ -461,18 +466,37 @@
                 <span class="line"></span>
             </div>
             <div class="skills-grid">
+                <span class="skill-tag highlight">C/C++</span>
                 <span class="skill-tag highlight">Python</span>
-                <span class="skill-tag">VS Code</span>
-                <span class="skill-tag">JetBrains IDE</span>
-                <span class="skill-tag">Linux / Bash</span>
-                <span class="skill-tag">Claude / AI Tools</span>
+                <span class="skill-tag">STM32 嵌入式开发</span>
+                <span class="skill-tag">AI TOOLS</span>
+            </div>
+        </section>
+
+        <!-- Projects -->
+        <section id="projects" class="reveal">
+            <div class="section-header">
+                <span class="number">03</span>
+                <h2>Projects</h2>
+                <span class="line"></span>
+            </div>
+            <p style="color:var(--ink-light);margin-bottom:1.5rem;font-size:1.02rem;">
+                My public repositories on GitHub.
+            </p>
+            <div class="projects-grid" id="projects-grid">
+                <!-- Dynamically loaded via GitHub API -->
+            </div>
+            <div style="text-align:center;margin-top:1.5rem;">
+                <a href="https://github.com/YuZiJiang-XianYu?tab=repositories" class="contact-btn" target="_blank" rel="noopener" style="text-decoration:none;">
+                    View All on GitHub &rarr;
+                </a>
             </div>
         </section>
 
         <!-- Contact -->
         <section id="contact" class="reveal">
             <div class="section-header">
-                <span class="number">03</span>
+                <span class="number">04</span>
                 <h2>Contact</h2>
                 <span class="line"></span>
             </div>
@@ -487,10 +511,6 @@
                 <a href="mailto:yuzijiang8710682@gmail.com" class="contact-btn">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
                     Email
-                </a>
-                <a href="#" class="contact-btn">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.633 7.997c.013.175.013.349.013.523 0 5.325-4.053 11.461-11.46 11.461-2.282 0-4.402-.661-6.186-1.809.324.037.636.05.973.05a8.07 8.07 0 0 0 5.001-1.721 4.036 4.036 0 0 1-3.767-2.793c.249.037.499.062.761.062.361 0 .724-.05 1.061-.137a4.027 4.027 0 0 1-3.23-3.953v-.05c.537.299 1.16.486 1.82.511a4.022 4.022 0 0 1-1.796-3.354c0-.748.199-1.434.548-2.032a11.457 11.457 0 0 0 8.306 4.215c-.062-.3-.1-.611-.1-.923a4.026 4.026 0 0 1 6.958-2.756 7.88 7.88 0 0 0 2.555-.973 4.02 4.02 0 0 1-1.771 2.22 8.044 8.044 0 0 0 2.319-.624 8.645 8.645 0 0 1-2.019 2.083z"/></svg>
-                    Twitter / X
                 </a>
             </div>
         </section>
@@ -524,6 +544,64 @@
 
         // Trigger hero reveal immediately
         document.querySelector('.hero.reveal').classList.add('visible');
+
+        // ---- GitHub Projects Loader ----
+        (async function loadGitHubProjects() {
+            const grid = document.getElementById('projects-grid');
+            if (!grid) return;
+
+            const USERNAME = 'YuZiJiang-XianYu';
+            const API_URL = `https://api.github.com/users/${USERNAME}/repos?sort=updated&per_page=6&type=public`;
+
+            // Language → CSS dot class mapping
+            function dotClass(lang) {
+                if (!lang) return 'dot-default';
+                const map = {
+                    'Python': 'dot-py', 'JavaScript': 'dot-js', 'HTML': 'dot-html',
+                    'CSS': 'dot-css', 'C': 'dot-c', 'C++': 'dot-cpp',
+                    'Java': 'dot-java', 'TypeScript': 'dot-ts', 'Go': 'dot-go',
+                    'Rust': 'dot-rust', 'Swift': 'dot-swift', 'Kotlin': 'dot-kotlin',
+                };
+                return map[lang] || 'dot-default';
+            }
+
+            try {
+                const resp = await fetch(API_URL);
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                const repos = await resp.json();
+
+                if (!repos.length) {
+                    grid.innerHTML = '<p style="color:var(--ink-lighter);">No public repositories yet.</p>';
+                    return;
+                }
+
+                grid.innerHTML = repos.map(repo => `
+                    <div class="project-card">
+                        <div class="meta">
+                            <span class="lang-dot ${dotClass(repo.language)}"></span>
+                            ${repo.language || 'N/A'}
+                            <span style="margin-left:auto;">★ ${repo.stargazers_count}</span>
+                        </div>
+                        <h3>
+                            <a href="${repo.html_url}" target="_blank" rel="noopener">${repo.name}</a>
+                        </h3>
+                        <p>${repo.description || 'No description.'}</p>
+                        <a href="${repo.html_url}" class="card-link" target="_blank" rel="noopener">
+                            View on GitHub →
+                        </a>
+                    </div>
+                `).join('');
+
+                // Observe new cards for scroll reveal
+                grid.querySelectorAll('.project-card').forEach(el => {
+                    el.classList.add('reveal');
+                    observer.observe(el);
+                });
+            } catch (err) {
+                console.error('Failed to load GitHub projects:', err);
+                grid.innerHTML = '<p style="color:var(--ink-lighter);">Unable to load projects right now. Check out my <a href="https://github.com/YuZiJiang-XianYu?tab=repositories" target="_blank" rel="noopener">GitHub</a> instead.</p>';
+            }
+        })();
     </script>
 </body>
 </html>
